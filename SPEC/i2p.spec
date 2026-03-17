@@ -82,6 +82,9 @@ for f in pkg-temp/*.txt pkg-temp/*.config; do
     [ -f "$f" ] && cp -a "$f" %{buildroot}%{i2p_home}/ || true
 done
 
+# Copy eepsite template directory (hidden service webserver config)
+cp -a pkg-temp/eepsite/ %{buildroot}%{i2p_home}/ 2>/dev/null || true
+
 # Apply headless-friendly overrides to upstream router.config
 # Disable auto-update (package manager handles updates)
 echo "" >> %{buildroot}%{i2p_home}/router.config

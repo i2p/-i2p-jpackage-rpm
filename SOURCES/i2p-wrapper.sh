@@ -43,13 +43,19 @@ if [ -z "$CLASSPATH" ]; then
     exit 1
 fi
 
-# Copy default configs on first run
-for cfg in "${I2P_BASE}"/*.config; do
-    cfg_name=$(basename "$cfg")
-    if [ ! -f "${I2P_CONFIG}/${cfg_name}" ]; then
-        cp "$cfg" "${I2P_CONFIG}/${cfg_name}"
+# Copy default configs and data on first run
+for f in "${I2P_BASE}"/*.config "${I2P_BASE}"/*.txt; do
+    [ -f "$f" ] || continue
+    fname=$(basename "$f")
+    if [ ! -f "${I2P_CONFIG}/${fname}" ]; then
+        cp "$f" "${I2P_CONFIG}/${fname}"
     fi
 done
+
+# Copy eepsite directory on first run (hidden service webserver)
+if [ ! -d "${I2P_CONFIG}/eepsite" ] && [ -d "${I2P_BASE}/eepsite" ]; then
+    cp -a "${I2P_BASE}/eepsite" "${I2P_CONFIG}/eepsite"
+fi
 
 # I2P system properties
 I2P_PROPS=(
