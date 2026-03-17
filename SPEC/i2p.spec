@@ -8,7 +8,7 @@
 %global i2p_libexec /usr/libexec/i2p
 
 Name:           i2p
-Version:        2.7.0
+Version:        2.11.0
 Release:        1%{?dist}
 Summary:        Anonymous network providing privacy-preserving communication
 
@@ -24,7 +24,7 @@ Source6:        i2p.logrotate
 Source7:        router.config
 Source8:        clients.config
 
-BuildRequires:  java-17-openjdk-devel
+BuildRequires:  java-devel >= 1:17
 BuildRequires:  ant
 BuildRequires:  gettext
 BuildRequires:  systemd-rpm-macros
@@ -152,5 +152,9 @@ install -d -m 750 %{buildroot}%{i2p_logdir}
 %license LICENSE*
 
 %changelog
+* Mon Mar 17 2026 I2P Developers <dev@lists.i2p2.de> - 2.11.0-1
+- Update to I2P 2.11.0
+- Use virtual java-devel/java-headless deps instead of java-17-openjdk
+
 * Mon Mar 17 2026 I2P Developers <dev@lists.i2p2.de> - 2.7.0-1
 - Initial RPM package for I2P

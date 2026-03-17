@@ -5,7 +5,7 @@ set -euo pipefail
 
 SCRIPT_DIR="$(cd "$(dirname "$0")" && pwd)"
 REPO_DIR="$(cd "${SCRIPT_DIR}/.." && pwd)"
-VERSION="${1:-2.7.0}"
+VERSION="${1:-2.11.0}"
 
 echo "=== Building I2P ${VERSION} RPM ==="
 

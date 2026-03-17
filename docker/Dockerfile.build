@@ -3,7 +3,7 @@ FROM fedora:41
 RUN dnf install -y \
     rpm-build \
     rpmdevtools \
-    java-17-openjdk-devel \
+    java-latest-openjdk-devel \
     ant \
     gettext \
     systemd-rpm-macros \
