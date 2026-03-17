@@ -89,9 +89,10 @@ run_in "test -f /usr/share/i2p/clients.config"
 echo "PASS"
 
 echo ""
-echo "--- Test 8: wrapper script can detect Java ---"
-run_in "bash -c 'source /etc/sysconfig/i2p && /usr/libexec/i2p/i2p-wrapper.sh --help 2>&1 || true'" | head -5
-echo "PASS (script runs without missing java error)"
+echo "--- Test 8: Java is usable and wrapper script parses ---"
+run_in "java -version 2>&1 | head -1"
+run_in "bash -n /usr/libexec/i2p/i2p-wrapper.sh"
+echo "PASS"
 
 echo ""
 echo "--- Test 9: Uninstall RPM ---"
