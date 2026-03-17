@@ -1,0 +1,7 @@
+# Build output
+output/
+rpmbuild/
+
+# Source tarballs (downloaded during build)
+SOURCES/*.tar.bz2
+SOURCES/*.tar.gz

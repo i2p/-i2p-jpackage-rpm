@@ -1,0 +1,38 @@
+[Unit]
+Description=I2P Anonymous Network Router
+Documentation=https://geti2p.net/
+After=network-online.target
+Wants=network-online.target
+
+[Service]
+Type=simple
+User=i2p
+Group=i2p
+EnvironmentFile=-/etc/sysconfig/i2p
+
+WorkingDirectory=/var/lib/i2p
+ExecStart=/usr/libexec/i2p/i2p-wrapper.sh
+ExecStop=/bin/kill -TERM $MAINPID
+
+# Hardening
+NoNewPrivileges=yes
+ProtectSystem=strict
+ProtectHome=yes
+ReadWritePaths=/var/lib/i2p /var/log/i2p /run/i2p
+PrivateTmp=yes
+ProtectKernelTunables=yes
+ProtectKernelModules=yes
+ProtectControlGroups=yes
+RestrictRealtime=yes
+RestrictSUIDSGID=yes
+
+# Resource limits
+LimitNOFILE=8192
+
+# Restart policy
+Restart=on-failure
+RestartSec=60
+SuccessExitStatus=143
+
+[Install]
+WantedBy=multi-user.target

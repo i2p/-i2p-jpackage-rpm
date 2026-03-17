@@ -1,0 +1,2 @@
+# Force LF line endings for all files (Linux packaging repo)
+* text=auto eol=lf
