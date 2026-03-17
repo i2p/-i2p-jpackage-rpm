@@ -46,7 +46,7 @@ run_in() {
 }
 
 echo "--- Installing Java runtime and RPM ---"
-run_in "dnf install -y java-17-openjdk-headless /rpms/${RPM_NAME}"
+run_in "dnf install -y /rpms/${RPM_NAME}"
 
 echo ""
 echo "--- Test 1: i2p user exists ---"

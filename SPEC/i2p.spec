@@ -29,7 +29,7 @@ BuildRequires:  ant
 BuildRequires:  gettext
 BuildRequires:  systemd-rpm-macros
 
-Requires:       java-17-openjdk-headless
+Requires:       java-headless >= 1:17
 Requires(pre):  shadow-utils
 
 # Disable automatic dependency generation — I2P bundles its own JARs
