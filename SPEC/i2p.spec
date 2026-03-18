@@ -14,7 +14,7 @@ Summary:        Anonymous network providing privacy-preserving communication
 
 License:        Apache-2.0 AND BSD-2-Clause AND BSD-3-Clause AND MIT AND GPL-2.0-only AND GPL-2.0-or-later AND GPL-3.0-only AND LGPL-2.1-only AND EPL-1.0 AND CC-BY-3.0 AND Artistic-2.0
 URL:            https://geti2p.net/
-Source0:        https://files.i2p-projekt.de/%{version}/i2psource_%{version}.tar.bz2
+Source0:        https://github.com/i2p/i2p.i2p/releases/download/i2p-%{version}/i2psource_%{version}.tar.bz2
 Source1:        i2p.service
 Source2:        i2p.sysusers
 Source3:        i2p.tmpfiles

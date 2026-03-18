@@ -6,7 +6,7 @@ VERSION="${1:?Usage: $0 <version> (e.g., 2.7.0)}"
 DEST_DIR="${2:-$(pwd)}"
 
 TARBALL="i2psource_${VERSION}.tar.bz2"
-URL="https://files.i2p-projekt.de/${VERSION}/${TARBALL}"
+URL="https://github.com/i2p/i2p.i2p/releases/download/i2p-${VERSION}/${TARBALL}"
 
 echo "Downloading I2P ${VERSION} source tarball..."
 echo "  URL: ${URL}"

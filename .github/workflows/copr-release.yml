@@ -24,8 +24,13 @@ jobs:
       - name: Determine version to build
         id: resolve
         run: |
+          # Extract version from tag: i2p-2.11.0 -> 2.11.0
+          strip_version() {
+            echo "$1" | sed -E 's/^(i2p-|v)//'
+          }
+
           if [ "${{ github.event_name }}" = "workflow_dispatch" ]; then
-            VERSION="${{ inputs.version }}"
+            VERSION=$(strip_version "${{ inputs.version }}")
             echo "Manual trigger: building version ${VERSION}"
             echo "version=${VERSION}" >> "$GITHUB_OUTPUT"
             echo "should_build=true" >> "$GITHUB_OUTPUT"
@@ -43,8 +48,8 @@ jobs:
             exit 0
           fi
 
-          # Strip common prefixes: i2p-2.11.0, v2.11.0, 2.11.0
-          VERSION=$(echo "$LATEST" | sed -E 's/^(i2p-|v)//')
+          # Strip prefix and build suffix: i2p-2.11.0-6 -> 2.11.0
+          VERSION=$(strip_version "$LATEST")
           echo "Upstream latest: ${LATEST} -> version ${VERSION}"
 
           # Check what COPR already has built
