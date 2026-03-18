@@ -1,8 +1,13 @@
 # I2P RPM Packaging
 
-RPM packaging for [I2P](https://geti2p.net/), the Invisible Internet Project anonymous network router.
+RPM packaging for [I2P](https://i2p.net/), the Invisible Internet Project anonymous network router.
 
 Produces installable `.rpm` packages for Fedora and RHEL/CentOS/Rocky/Alma Linux.
+
+> **Note:** Despite the "jpackage" name, this repository does not use Java's `jpackage` tool.
+> The name follows the I2P project's convention of prefixing deployment packaging repos with
+> `i2p-jpackage-` (e.g., `i2p-jpackage-deb`, `i2p-jpackage-rpm`) to keep them organized
+> under a common namespace.
 
 ## Quick Start
 
@@ -10,17 +15,17 @@ Produces installable `.rpm` packages for Fedora and RHEL/CentOS/Rocky/Alma Linux
 
 ```bash
 podman build -t i2p-rpm-builder -f docker/Dockerfile.build .
-podman run --rm -v ./output:/output i2p-rpm-builder /build/scripts/build-rpm.sh 2.7.0
+podman run --rm -v ./output:/output i2p-rpm-builder /build/scripts/build-rpm.sh 2.11.0
 ```
 
 ### Building locally on Fedora
 
 ```bash
 # Install build dependencies
-sudo dnf install rpm-build rpmdevtools java-17-openjdk-devel ant gettext systemd-rpm-macros
+sudo dnf install rpm-build rpmdevtools java-latest-openjdk-devel ant gettext systemd-rpm-macros
 
 # Build
-./scripts/build-rpm.sh 2.7.0
+./scripts/build-rpm.sh 2.11.0
 ```
 
 The built RPMs will be in `./output/`.
@@ -28,7 +33,7 @@ The built RPMs will be in `./output/`.
 ## Installing
 
 ```bash
-sudo dnf install ./output/i2p-2.7.0-1.fc41.x86_64.rpm
+sudo dnf install ./output/i2p-2.11.0-1.fc41.noarch.rpm
 ```
 
 ## Post-Install
@@ -61,7 +66,7 @@ SOURCES/                  # Systemd units, configs, wrapper script
 scripts/                  # Build and test scripts
 docker/                   # Build container Dockerfile
 .github/workflows/       # CI pipelines
-.copr/                   # COPR build integration (Phase 2)
+.copr/                   # COPR build integration
 ```
 
 ## Target Distributions

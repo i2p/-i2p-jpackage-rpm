@@ -162,9 +162,7 @@ install -d -m 750 %{buildroot}%{i2p_logdir}
 %license LICENSE*
 
 %changelog
-* Mon Mar 17 2026 I2P Developers <dev@lists.i2p2.de> - 2.11.0-1
-- Update to I2P 2.11.0
+* Tue Mar 17 2026 I2P Developers <admin@i2p.net> - 2.11.0-1
 - Use virtual java-devel/java-headless deps instead of java-17-openjdk
-
-* Mon Mar 17 2026 I2P Developers <dev@lists.i2p2.de> - 2.7.0-1
 - Initial RPM package for I2P
+
