@@ -1,0 +1,28 @@
+# I2P rpmlint suppression config
+# These are intentional packaging choices, not bugs.
+
+# /var/lib/i2p and /var/log/i2p use 750 permissions for security.
+# Only the i2p service user should access router state and logs.
+addFilter("non-standard-dir-perm .*/var/lib/i2p 750")
+addFilter("non-standard-dir-perm .*/var/log/i2p 750")
+addFilter("logrotate-user-writable-log-dir .*/var/log/i2p")
+
+# The i2p user/group is created via sysusers.d — expected for a service account.
+addFilter("non-standard-uid .* i2p")
+addFilter("non-standard-gid .* i2p")
+
+# /run/i2p is managed by tmpfiles.d, not owned in %files.
+addFilter("tmpfile-not-in-filelist /run/i2p")
+addFilter("post-without-tmpfile-creation")
+
+# %pre uses sysusers_create_compat macro — rpmlint doesn't recognize it.
+addFilter("empty-%pre")
+
+# I2P bundles its own JARs with Class-Path manifests — upstream convention.
+addFilter("class-path-in-manifest")
+
+# Duplicate flag PNGs between eepsite help and docs — upstream layout.
+addFilter("files-duplicate")
+
+# Hidden .resources dir in eepsite docroot — upstream convention.
+addFilter("hidden-file-or-dir")

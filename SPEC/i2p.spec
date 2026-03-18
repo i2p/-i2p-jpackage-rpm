@@ -9,11 +9,11 @@
 
 Name:           i2p
 Version:        2.11.0
-Release:        1%{?dist}
+Release:        2%{?dist}
 Summary:        Anonymous network providing privacy-preserving communication
 
 License:        Apache-2.0 AND BSD-2-Clause AND BSD-3-Clause AND MIT AND GPL-2.0-only AND GPL-2.0-or-later AND GPL-3.0-only AND LGPL-2.1-only AND EPL-1.0 AND CC-BY-3.0 AND Artistic-2.0
-URL:            https://geti2p.net/
+URL:            https://i2p.net/
 Source0:        https://github.com/i2p/i2p.i2p/releases/download/i2p-%{version}/i2psource_%{version}.tar.bz2
 Source1:        i2p.service
 Source2:        i2p.sysusers
@@ -28,6 +28,7 @@ BuildRequires:  gettext
 BuildRequires:  systemd-rpm-macros
 
 Requires:       java-headless >= 1:17
+Requires:       logrotate
 Requires(pre):  shadow-utils
 
 # Disable automatic dependency generation — I2P bundles its own JARs
@@ -59,8 +60,6 @@ ant preppkg-linux-only \
     -Dbuild.built-by="RPM Build"
 
 %install
-rm -rf %{buildroot}
-
 # Static data: JARs, webapps, certificates, geoip, docs
 install -d -m 755 %{buildroot}%{i2p_home}
 install -d -m 755 %{buildroot}%{i2p_home}/lib
@@ -162,7 +161,13 @@ install -d -m 750 %{buildroot}%{i2p_logdir}
 %license LICENSE*
 
 %changelog
-* Tue Mar 17 2026 I2P Developers <admin@i2p.net> - 2.11.0-1
+* Wed Mar 18 2026 StormyCloud <admin@i2p.net> - 2.11.0-2
+- Add Requires: logrotate for log rotation config
+- Fix URL field to i2p.net
+- Remove unnecessary rm -rf buildroot from install
+- Add rpmlint suppression config (i2p.rpmlintrc)
+
+* Tue Mar 17 2026 StormyCloud <admin@i2p.net> - 2.11.0-1
 - Use virtual java-devel/java-headless deps instead of java-17-openjdk
 - Initial RPM package for I2P
 
