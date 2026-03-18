@@ -80,7 +80,7 @@ jobs:
             java-latest-openjdk-devel ant gettext \
             systemd-rpm-macros \
             curl bzip2 git \
-            python3-copr-cli
+            copr-cli
 
       - name: Checkout packaging repo
         uses: actions/checkout@v4
