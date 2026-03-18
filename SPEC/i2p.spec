@@ -9,7 +9,7 @@
 
 Name:           i2p
 Version:        2.11.0
-Release:        2%{?dist}
+Release:        3%{?dist}
 Summary:        Anonymous network providing privacy-preserving communication
 
 License:        Apache-2.0 AND BSD-2-Clause AND BSD-3-Clause AND MIT AND GPL-2.0-only AND GPL-2.0-or-later AND GPL-3.0-only AND LGPL-2.1-only AND EPL-1.0 AND CC-BY-3.0 AND Artistic-2.0
@@ -34,6 +34,12 @@ Requires(pre):  shadow-utils
 # Disable automatic dependency generation — I2P bundles its own JARs
 AutoReqProv:    no
 
+# Bundled libraries that cannot be unbundled (tightly coupled upstream build)
+Provides:       bundled(jetty) = 12.0.28
+Provides:       bundled(apache-tomcat) = 9.0.107
+Provides:       bundled(jstl) = 1.2
+Provides:       bundled(slf4j) = 2.0.17
+
 # I2P is Java (noarch JARs) but may include architecture-specific JNI (jbigi)
 # Start as noarch; switch to arch-specific if jbigi native build is added
 BuildArch:      noarch
@@ -51,6 +57,12 @@ accessible at 127.0.0.1:7657 after starting the service.
 
 %prep
 %setup -q -n i2p-%{version}
+
+# Remove pre-built JARs not needed for headless Linux build
+# Installer tools (izpack, launch4j, service wrapper) — only used for GUI installer
+rm -rf installer/lib/
+# Gradle wrapper — we build with ant
+rm -f gradle/wrapper/gradle-wrapper.jar
 
 %build
 # Build I2P using the pkg target (headless Linux, no installer)
@@ -161,6 +173,10 @@ install -d -m 750 %{buildroot}%{i2p_logdir}
 %license LICENSE*
 
 %changelog
+* Wed Mar 18 2026 StormyCloud <admin@i2p.net> - 2.11.0-3
+- Remove pre-built JARs not needed for build (installer, gradle wrapper)
+- Add Provides: bundled() for Jetty, Tomcat, JSTL, SLF4J
+
 * Wed Mar 18 2026 StormyCloud <admin@i2p.net> - 2.11.0-2
 - Add Requires: logrotate for log rotation config
 - Fix URL field to i2p.net
