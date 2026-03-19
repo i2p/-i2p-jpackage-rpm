@@ -1,4 +1,11 @@
 -------------------------------------------------------------------
+Wed Mar 19 12:00:00 UTC 2026 - StormyCloud <admin@i2p.net>
+
+- Fix OBS builds: use fillupdir for sysconfig, add rci2p symlink
+- Add rpmlintrc (suppress class-path-in-manifest, fhs23 warnings)
+- Own /usr/libexec on Leap, add tmpfiles_create in post
+
+-------------------------------------------------------------------
 Wed Mar 18 12:00:00 UTC 2026 - StormyCloud <admin@i2p.net>
 
 - Initial openSUSE package for I2P 2.11.0

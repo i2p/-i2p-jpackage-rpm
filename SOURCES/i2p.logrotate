@@ -1,4 +1,5 @@
 /var/log/i2p/*.log {
+    su i2p i2p
     weekly
     rotate 4
     compress

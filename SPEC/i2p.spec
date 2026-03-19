@@ -9,7 +9,7 @@
 
 Name:           i2p
 Version:        2.11.0
-Release:        4%{?dist}
+Release:        5%{?dist}
 Summary:        Anonymous network providing privacy-preserving communication
 %if 0%{?suse_version}
 Group:          Productivity/Networking/Other
@@ -24,12 +24,14 @@ Source3:        i2p.tmpfiles
 Source4:        i2p.conf
 Source5:        i2p-wrapper.sh
 Source6:        i2p.logrotate
+Source7:        i2p.rpmlintrc
 
 BuildRequires:  ant
 BuildRequires:  systemd-rpm-macros
 %if 0%{?suse_version}
 BuildRequires:  java-17-openjdk-devel
 BuildRequires:  gettext-tools
+BuildRequires:  sysuser-tools
 %else
 BuildRequires:  java-devel >= 1:17
 BuildRequires:  gettext
@@ -143,8 +145,13 @@ install -d -m 755 %{buildroot}%{_tmpfilesdir}
 install -m 644 %{SOURCE3} %{buildroot}%{_tmpfilesdir}/i2p.conf
 
 # Environment config
+%if 0%{?suse_version}
+install -d -m 755 %{buildroot}%{_fillupdir}
+install -m 644 %{SOURCE4} %{buildroot}%{_fillupdir}/sysconfig.i2p
+%else
 install -d -m 755 %{buildroot}%{_sysconfdir}/sysconfig
 install -m 644 %{SOURCE4} %{buildroot}%{_sysconfdir}/sysconfig/i2p
+%endif
 
 # Logrotate
 install -d -m 755 %{buildroot}%{_sysconfdir}/logrotate.d
@@ -155,6 +162,12 @@ install -d -m 750 %{buildroot}%{i2p_confdir}
 
 # Log directory
 install -d -m 750 %{buildroot}%{i2p_logdir}
+
+# SUSE rcFOO symlink (required by rpmlint)
+%if 0%{?suse_version}
+install -d -m 755 %{buildroot}%{_sbindir}
+ln -sf service %{buildroot}%{_sbindir}/rci2p
+%endif
 
 %pre
 %if 0%{?suse_version}
@@ -168,6 +181,8 @@ getent passwd i2p >/dev/null || useradd -r -g i2p -d /var/lib/i2p -s /sbin/nolog
 %post
 %if 0%{?suse_version}
 %service_add_post i2p.service
+%fillup_only i2p
+%tmpfiles_create %{_tmpfilesdir}/i2p.conf
 %else
 %systemd_post i2p.service
 %endif
@@ -189,6 +204,9 @@ getent passwd i2p >/dev/null || useradd -r -g i2p -d /var/lib/i2p -s /sbin/nolog
 %files
 # Static application data
 %{i2p_home}/
+%if 0%{?suse_version} && 0%{?sle_version}
+%dir /usr/libexec
+%endif
 %{i2p_libexec}/
 
 # Systemd integration
@@ -197,7 +215,12 @@ getent passwd i2p >/dev/null || useradd -r -g i2p -d /var/lib/i2p -s /sbin/nolog
 %{_tmpfilesdir}/i2p.conf
 
 # Configuration (survives upgrades)
+%if 0%{?suse_version}
+%{_fillupdir}/sysconfig.i2p
+%{_sbindir}/rci2p
+%else
 %config(noreplace) %{_sysconfdir}/sysconfig/i2p
+%endif
 %config(noreplace) %{_sysconfdir}/logrotate.d/i2p
 
 # Mutable state and log directories (owned by i2p user)
@@ -209,6 +232,12 @@ getent passwd i2p >/dev/null || useradd -r -g i2p -d /var/lib/i2p -s /sbin/nolog
 %license LICENSE*
 
 %changelog
+* Wed Mar 19 2026 StormyCloud <admin@i2p.net> - 2.11.0-5
+- Fix OBS builds: use fillupdir for sysconfig, add rci2p symlink
+- Add rpmlintrc as Source7 (suppress class-path-in-manifest, fhs23)
+- Own /usr/libexec on Leap, add tmpfiles_create in post
+- Add sysuser-tools BuildRequires for openSUSE
+
 * Wed Mar 18 2026 StormyCloud <admin@i2p.net> - 2.11.0-4
 - Add openSUSE/SLES conditional macros for multi-distro support
 - Add Group tag, sysuser-tools BuildRequires for openSUSE
