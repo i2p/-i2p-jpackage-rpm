@@ -25,17 +25,22 @@ Source4:        i2p.conf
 Source5:        i2p-wrapper.sh
 Source6:        i2p.logrotate
 
-BuildRequires:  java-devel >= 1:17
 BuildRequires:  ant
 BuildRequires:  systemd-rpm-macros
 %if 0%{?suse_version}
+BuildRequires:  java-17-openjdk-devel
 BuildRequires:  gettext-tools
 BuildRequires:  sysuser-tools
 %else
+BuildRequires:  java-devel >= 1:17
 BuildRequires:  gettext
 %endif
 
+%if 0%{?suse_version}
+Requires:       java-17-openjdk-headless
+%else
 Requires:       java-headless >= 1:17
+%endif
 Requires:       logrotate
 %if 0%{?suse_version}
 Requires(pre):  shadow
