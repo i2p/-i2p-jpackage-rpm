@@ -6,12 +6,17 @@ VERSION="${1:?Usage: $0 <version> (e.g., 2.7.0)}"
 DEST_DIR="${2:-$(pwd)}"
 
 TARBALL="i2psource_${VERSION}.tar.bz2"
-URL="https://github.com/i2p/i2p.i2p/releases/download/i2p-${VERSION}/${TARBALL}"
+PRIMARY_URL="https://files.i2p-projekt.de/${VERSION}/${TARBALL}"
+FALLBACK_URL="https://github.com/i2p/i2p.i2p/releases/download/i2p-${VERSION}/${TARBALL}"
 
 echo "Downloading I2P ${VERSION} source tarball..."
-echo "  URL: ${URL}"
+echo "  Primary URL: ${PRIMARY_URL}"
 
-curl -L -o "${DEST_DIR}/${TARBALL}" "${URL}"
+if ! curl -fSL -o "${DEST_DIR}/${TARBALL}" "${PRIMARY_URL}"; then
+    echo "  Primary download failed, trying GitHub fallback..."
+    echo "  Fallback URL: ${FALLBACK_URL}"
+    curl -fSL -o "${DEST_DIR}/${TARBALL}" "${FALLBACK_URL}"
+fi
 
 if [ ! -s "${DEST_DIR}/${TARBALL}" ]; then
     echo "ERROR: Downloaded file is empty or missing" >&2

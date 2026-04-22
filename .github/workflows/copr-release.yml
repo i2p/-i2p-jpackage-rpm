@@ -37,10 +37,15 @@ jobs:
             exit 0
           fi
 
-          # Scheduled run: check latest upstream release
-          echo "Checking latest i2p/i2p.i2p release..."
-          LATEST=$(curl -sf https://api.github.com/repos/i2p/i2p.i2p/releases/latest \
-            | jq -r '.tag_name')
+          # Scheduled run: check latest upstream release tag
+          # Note: upstream creates git tags (i2p-X.Y.Z) before GitHub Releases,
+          # so we check tags matching the release pattern rather than /releases/latest.
+          echo "Checking latest i2p/i2p.i2p release tag..."
+          LATEST=$(curl -sf "https://api.github.com/repos/i2p/i2p.i2p/git/refs/tags" \
+            | jq -r '[.[].ref | select(test("refs/tags/i2p-[0-9]+\\.[0-9]+\\.[0-9]+$"))]
+                     | map(ltrimstr("refs/tags/"))
+                     | sort_by(split("-")[1] | split(".") | map(tonumber))
+                     | last')
 
           if [ -z "$LATEST" ] || [ "$LATEST" = "null" ]; then
             echo "ERROR: Could not fetch latest release tag" >&2
@@ -48,9 +53,8 @@ jobs:
             exit 0
           fi
 
-          # Strip prefix and build suffix: i2p-2.11.0-6 -> 2.11.0
           VERSION=$(strip_version "$LATEST")
-          echo "Upstream latest: ${LATEST} -> version ${VERSION}"
+          echo "Upstream latest tag: ${LATEST} -> version ${VERSION}"
 
           # Check what COPR already has built
           echo "Checking COPR for existing builds..."
@@ -59,7 +63,7 @@ jobs:
           echo "COPR API response: ${COPR_RAW}"
 
           COPR_VERSION=$(echo "$COPR_RAW" \
-            | jq -r '.latest_succeeded_build.source_package.version // empty' \
+            | jq -r '.builds.latest_succeeded.source_package.version // empty' \
             | sed 's/-.*//')
 
           echo "COPR latest build version: ${COPR_VERSION:-none}"
