@@ -232,7 +232,7 @@ getent passwd i2p >/dev/null || useradd -r -g i2p -d /var/lib/i2p -s /sbin/nolog
 %license LICENSE*
 
 %changelog
-* Wed Mar 19 2026 StormyCloud <admin@i2p.net> - 2.11.0-5
+* Thu Mar 19 2026 StormyCloud <admin@i2p.net> - 2.11.0-5
 - Fix OBS builds: use fillupdir for sysconfig, add rci2p symlink
 - Add rpmlintrc as Source7 (suppress class-path-in-manifest, fhs23)
 - Own /usr/libexec on Leap, add tmpfiles_create in post

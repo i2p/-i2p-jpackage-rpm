@@ -25,8 +25,8 @@ jobs:
             install_cmd: >-
               zypper --non-interactive install
               rpm-build rpmdevtools
-              java-17-openjdk-devel ant gettext-runtime
-              systemd-rpm-macros
+              java-17-openjdk-devel ant gettext-tools
+              systemd-rpm-macros sysuser-tools
               curl bzip2 git
 
     runs-on: ubuntu-latest
