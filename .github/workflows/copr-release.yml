@@ -9,10 +9,6 @@ on:
         required: true
         type: string
 
-  # Poll upstream every 6 hours for new releases
-  schedule:
-    - cron: '0 */6 * * *'
-
 jobs:
   check-version:
     runs-on: ubuntu-latest
