@@ -1,6 +1,22 @@
 # I2P rpmlint suppression config
 # These are intentional packaging choices, not bugs.
 
+# /var/lib/i2p and /var/log/i2p use 750 permissions for security.
+# Only the i2p service user should access router state and logs.
+addFilter("non-standard-dir-perm .*/var/lib/i2p 750")
+addFilter("non-standard-dir-perm .*/var/log/i2p 750")
+
+# The i2p user/group is created via sysusers.d — expected for a service account.
+addFilter("non-standard-uid .* i2p")
+addFilter("non-standard-gid .* i2p")
+
+# /run/i2p is managed by tmpfiles.d, not owned in %files.
+addFilter("tmpfile-not-in-filelist /run/i2p")
+addFilter("post-without-tmpfile-creation")
+
+# %pre uses sysusers_create_compat macro — rpmlint doesn't recognize it.
+addFilter("empty-%pre")
+
 # I2P bundles its own JARs with Class-Path manifests — upstream convention.
 addFilter("class-path-in-manifest")
 
@@ -9,12 +25,3 @@ addFilter("files-duplicate")
 
 # Hidden .resources dir in eepsite docroot — upstream convention.
 addFilter("hidden-file-or-dir")
-
-# /var/lib/i2p and /var/log/i2p are outside /usr but required for FHS state.
-addFilter("dir-or-file-outside-snapshot")
-
-# /usr/libexec is valid in FHS 3.0+ but Leap rpmlint still warns.
-addFilter("suse-filelist-forbidden-fhs23")
-
-# tmpfiles.d creates /run/i2p at boot, not owned in %files.
-addFilter("tmpfile-not-in-filelist")
