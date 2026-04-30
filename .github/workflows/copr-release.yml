@@ -82,7 +82,7 @@ jobs:
     if: needs.check-version.outputs.should_build == 'true'
     runs-on: ubuntu-latest
     container:
-      image: fedora:41
+      image: fedora:43
 
     steps:
       - name: Install build tools

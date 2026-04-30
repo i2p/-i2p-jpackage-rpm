@@ -9,7 +9,7 @@ jobs:
   release:
     runs-on: ubuntu-latest
     container:
-      image: fedora:41
+      image: fedora:43
     permissions:
       contents: write
 
